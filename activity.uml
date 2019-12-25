@@ -1,0 +1,39 @@
+@startuml
+
+start
+
+:Enter "google.com" in the address bar of the browser;
+:Pars URL;
+if (Site in list HSTS?) then (Yes)
+  :Check file "hosts";
+  if (The domain in the file "hosts"?) then (Yes)
+  	:Check the domain in cache;
+	else (No)
+    if (Is the domain on the same subnet??) then (Yes)
+    	:ARP-request;
+        :Response ARP-request;
+    	else (No)
+    	:ARP request is sent to the IP address of the default gateway;
+     endif
+     endif
+    :TCP socket stream request;
+    :Answer;
+    :TLS handshake request;
+    :Answer;
+    :Send HTTP-request;
+    if (Are HTTP headers missing in the cache?) then (Yes)
+    :HTML page submission;
+    else (No)
+    :Loading HTML page from cache;
+    endif
+:Pars HTML;
+:Interpretation CSS;
+:Rendering;
+:JavaScript;
+:Display page;
+else (No)
+  :The answer about the need to use HTTPS;
+
+endif
+
+stop

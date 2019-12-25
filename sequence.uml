@@ -1,0 +1,62 @@
+@startuml
+
+participant User
+participant Browser
+participant DNS
+participant Server
+
+User -> Browser : Enter "google.com" in the address bar of the browser
+Activate Browser
+Browser -> Browser : Pars URL
+
+Browser -> Browser : Check HSTS list
+
+Alt Site in the HSTS list
+
+Browser -> Browser : Check hosts-file
+
+Alt Domain in the hosts-file
+
+Browser -> Browser : Check the domain in cache
+
+Else The domain is not in the hosts file
+
+Alt If DNS is on the same subnet
+Browser -> DNS : ARP-request
+Activate DNS
+Browser <-- DNS : ARP
+Deactivate DNS
+Else If DNS is on the other subnet
+Browser -> Browser : ARP request is sent to the IP address of the default gateway
+end
+end
+
+Browser -> Browser : TCP socket stream request
+Browser -> Server : TLS handshake request
+Browser -> Server : HTTP-request
+Activate Server
+
+Alt HTTP-headers are missing in browser cache
+
+Server --> Browser : HTML-page
+
+Else HTTP-headers are present in the browser cache
+Browser -> Browser : Load HTML-page from cache
+end
+
+Deactivate Server
+
+Browser -> Browser : Pars HTML
+Browser -> Browser : CSS
+Browser -> Browser : JavaScript
+Browser --> User : Display page
+
+else If the site is not listed in the HSTS list, then uses the HSTS policy
+
+Browser --> User: The answer about the need to use HTTPS
+
+end
+
+Deactivate Browser
+
+@enduml

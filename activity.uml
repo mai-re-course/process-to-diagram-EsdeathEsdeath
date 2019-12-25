@@ -17,9 +17,7 @@ if (Site in list HSTS?) then (Yes)
      endif
      endif
     :TCP socket stream request;
-    :Answer;
     :TLS handshake request;
-    :Answer;
     :Send HTTP-request;
     if (Are HTTP headers missing in the cache?) then (Yes)
     :HTML page submission;

@@ -26,7 +26,6 @@ if (Site in list HSTS?) then (Yes)
     endif
 :Pars HTML;
 :Interpretation CSS;
-:Rendering;
 :JavaScript;
 :Display page;
 else (No)
